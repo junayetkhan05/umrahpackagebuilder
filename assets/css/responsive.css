@@ -1,0 +1,98 @@
+/* ============================================================
+   UMRAH BUILDER — RESPONSIVE CSS
+   All media queries + print styles
+   ============================================================ */
+
+@media (max-width: 1200px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .charts-row { grid-template-columns: 1fr; }
+  .content-row { grid-template-columns: 1fr; }
+  .an-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .an-charts-row { grid-template-columns: 1fr; }
+  .an-breakdown-row { grid-template-columns: 1fr; }
+  .car-rates-grid { grid-template-columns: repeat(2, 1fr); }
+  .zy-car-rates-row { grid-template-columns: repeat(2, 1fr); }
+  .hotel-room-row { grid-template-columns: 42px 1fr 1fr; gap: 8px; }
+  .hotel-room-row .rc:nth-child(n+4) { grid-column: span 1; }
+  .hotel-rooms-total { grid-template-columns: 1fr 1fr; }
+  .expense-category-grid { grid-template-columns: repeat(2, 1fr); }
+  .doc-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .room-rate-grid { grid-template-columns: repeat(2, 1fr); }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .img-grid { grid-template-columns: repeat(2, 1fr); }
+  .hotel-room-row { grid-template-columns: 42px 1fr 1fr; gap: 6px; }
+  .hotel-room-row .rr-btn { grid-column: 1 / -1; width: 100%; }
+  .zy-transport-item { grid-template-columns: 1fr 1fr; }
+  .doc-grid { grid-template-columns: repeat(2, 1fr); }
+  .top-performer-bonus { padding-left: 0; border-left: none; padding-top: 12px; border-top: 1px solid rgba(146,64,14,.3); width: 100%; text-align: left; }
+}
+
+@media (max-width: 768px) {
+  .app { grid-template-columns: 1fr; }
+  .sb { position: static; height: auto; flex-direction: row; overflow-x: auto; padding: 10px; gap: 4px; border-right: none; border-bottom: 1px solid var(--border); }
+  .brand { padding: 0 12px 0 0; margin-bottom: 0; }
+  .sb-section { display: none; }
+  .ni { padding: 8px 12px; white-space: nowrap; margin: 0; border-radius: 8px; }
+  .ni .badge { display: none; }
+  .profile-box { display: none; }
+  .mn { padding: 16px 16px 140px; }
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .an-kpi-grid { grid-template-columns: 1fr 1fr; }
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+  .toast { bottom: 100px; right: 16px; left: 16px; max-width: none; }
+  .search-global { display: none; }
+  .sticky-summary { left: 0; padding: 12px 16px; }
+  .sticky-summary .ss-info { gap: 20px; overflow-x: auto; }
+  .img-grid { grid-template-columns: 1fr; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .customer-row { flex-wrap: wrap; }
+  .customer-stats { width: 100%; justify-content: space-between; }
+  .hotel-stay-dates { grid-template-columns: 1fr; }
+  .followup-row { flex-wrap: wrap; }
+  .car-rates-grid { grid-template-columns: 1fr 1fr; }
+  .zy-car-rates-row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .expense-category-grid { grid-template-columns: 1fr; }
+  .doc-grid { grid-template-columns: 1fr 1fr; }
+  .top-performer-name { font-size: 20px; }
+  .top-performer-bonus .val { font-size: 22px; }
+}
+
+@media (max-width: 480px) {
+  .chatbot-fab { bottom: 75px; right: 16px; width: 56px; height: 56px; }
+  .chatbot-fab-icon { font-size: 26px; }
+  .chatbot-panel { right: 12px; left: 12px; bottom: 140px; width: auto; height: calc(100vh - 220px); max-height: 560px; }
+}
+
+/* PRINT */
+@media print {
+  body * { visibility: hidden; }
+  #invoiceModal, #invoiceModal * { visibility: visible; }
+  #invoiceModal { position: absolute; left: 0; top: 0; width: 100%; background: #fff !important; backdrop-filter: none !important; padding: 0; overflow: visible; }
+  #invoiceModal .modal { max-width: 100% !important; border-radius: 0; box-shadow: none; margin: 0; width: 100% !important; }
+  #invoiceModal .modal-head, #invoiceModal .modal-foot { display: none !important; }
+  #invoiceModal .modal-body { padding: 0 !important; max-height: none !important; overflow: visible !important; background: #fff !important; }
+  #umrahPrintArea { max-width: 100% !important; margin: 0 !important; }
+  .chatbot-fab, .chatbot-panel { display: none !important; }
+}
+
+.pdf-header, .pdf-footer { display: block; }
+#umrahPrintArea .page-break { page-break-before: always; }
+
+@page { size: A4 portrait; margin: 10mm; }
+
+@media print {
+  html, body { width: 210mm; min-height: 297mm; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #umrahPrintArea { max-width: 100% !important; margin: 0 !important; width: 190mm !important; }
+  #umrahPrintArea .pdf-two-col { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  #umrahPrintArea table { page-break-inside: auto; }
+  #umrahPrintArea tr { page-break-inside: avoid; page-break-after: auto; }
+  #umrahPrintArea .page-break { page-break-before: always; }
+}

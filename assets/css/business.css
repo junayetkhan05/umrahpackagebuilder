@@ -1,0 +1,254 @@
+/* ============================================================
+   UMRAH BUILDER — BUSINESS CSS
+   Reports, Accounts, Performance, Tasks, Documents
+   ============================================================ */
+
+/* EXPENSE CATEGORY */
+.expense-category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.expense-category-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  text-align: center;
+  transition: all .2s;
+  cursor: pointer;
+}
+.expense-category-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.expense-category-card .icon { font-size: 26px; margin-bottom: 6px; }
+.expense-category-card .label {
+  font-size: 10.5px;
+  color: var(--text-3);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.expense-category-card .amount { font-size: 20px; font-weight: 900; margin-top: 6px; }
+
+/* TOP PERFORMER */
+.top-performer-card {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.top-performer-card::before {
+  content: '🏆';
+  position: absolute;
+  top: -30px;
+  right: -20px;
+  font-size: 140px;
+  opacity: .12;
+}
+.top-performer-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+}
+.top-performer-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(245,158,11,.4);
+}
+.top-performer-info { flex: 1; min-width: 200px; }
+.top-performer-label {
+  font-size: 11px;
+  color: #92400e;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.top-performer-name {
+  font-size: 24px;
+  font-weight: 900;
+  color: #78350f;
+  margin-top: 4px;
+}
+.top-performer-stats {
+  font-size: 13px;
+  color: #92400e;
+  margin-top: 4px;
+  font-weight: 600;
+}
+.top-performer-bonus {
+  text-align: right;
+  padding-left: 20px;
+  border-left: 1px solid rgba(146,64,14,.3);
+}
+.top-performer-bonus .lbl {
+  font-size: 10px;
+  color: #92400e;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.top-performer-bonus .val {
+  font-size: 28px;
+  font-weight: 900;
+  color: #78350f;
+  margin-top: 4px;
+}
+
+/* RANK BADGES */
+.rank-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 13px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.rank-badge.r1 { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+.rank-badge.r2 { background: linear-gradient(135deg, #e5e7eb, #9ca3af); }
+.rank-badge.r3 { background: linear-gradient(135deg, #d97706, #92400e); }
+.rank-badge.rn { background: linear-gradient(135deg, #94a3b8, #64748b); }
+
+/* PERF BAR */
+.perf-bar {
+  width: 100px;
+  height: 6px;
+  background: var(--bg-2);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.perf-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  border-radius: 20px;
+  transition: width .4s ease;
+}
+
+/* TASK TABS */
+.task-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  margin-bottom: 4px;
+}
+.task-tab {
+  padding: 12px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all .15s;
+}
+.task-tab:hover { color: var(--text); background: var(--bg-2); }
+.task-tab.act {
+  color: var(--primary);
+  font-weight: 700;
+  border-bottom-color: var(--primary);
+}
+
+/* TASK ITEM */
+.task-item {
+  padding: 14px 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  transition: all .15s;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.task-item:hover { transform: translateX(3px); border-color: var(--border); }
+.task-item.priority-high { background: var(--red-bg); border-left: 4px solid var(--red); }
+.task-item.priority-medium { background: var(--amber-bg); border-left: 4px solid var(--amber); }
+.task-item.priority-low { background: var(--bg-2); border-left: 4px solid var(--blue); }
+.task-item.completed { opacity: .55; }
+
+.task-check {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+.task-content { flex: 1; min-width: 0; }
+.task-title { font-weight: 700; font-size: 13.5px; margin-bottom: 3px; }
+.task-title.completed { text-decoration: line-through; color: var(--text-3); }
+.task-meta { font-size: 11px; color: var(--text-3); display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* DOCUMENTS */
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.doc-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card);
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.doc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+.doc-thumb {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  position: relative;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+}
+.doc-thumb.passport { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+.doc-thumb.visa { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+.doc-thumb.nid { background: linear-gradient(135deg, #faf5ff, #e9d5ff); }
+.doc-thumb.ticket { background: linear-gradient(135deg, #fff7ed, #fed7aa); }
+.doc-thumb.warning { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+
+.doc-status-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 20px;
+  color: #fff;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+}
+.doc-status-badge.valid { background: var(--green); }
+.doc-status-badge.warning { background: var(--amber); }
+.doc-status-badge.expired { background: var(--red); }
+
+.doc-info { padding: 12px; }
+.doc-name { font-size: 12.5px; font-weight: 800; margin-bottom: 3px; }
+.doc-meta { font-size: 10.5px; color: var(--text-3); }
