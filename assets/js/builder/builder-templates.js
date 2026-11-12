@@ -38,3 +38,42 @@ async function applyTemplate(key) {
     toast(`✅ Template "${t.name}" loaded — সব price/quantity edit করতে পারবেন`, 'info');
   }, 150);
 }
+
+/*
+ * Hotel pricing override: this file loads after builder-hotels.js.
+ * Use the selected hotel's selling rate when configured; if that room
+ * category has no selling rate, fall back to the linked vendor's rate
+ * instead of leaving a stale price or displaying zero.
+ */
+function getHotelDefaultRate(cityType, hotelId, roomType, vendorId = null) {
+  if (!hotelId) return 0;
+
+  const master = getHotelMaster(cityType, hotelId);
+  if (!master) return 0;
+
+  const sellingRate = Number(master[roomType]);
+  if (Number.isFinite(sellingRate) && sellingRate > 0) return sellingRate;
+
+  const linkedVendorId = vendorId || master.vendorId;
+  const vendorRate = Number(getHotelVendorRate(cityType, hotelId, roomType, linkedVendorId));
+  return Number.isFinite(vendorRate) ? vendorRate : 0;
+}
+
+function syncHotelRoomPricing(cityType, hotelItem, room) {
+  if (!hotelItem?.hotelId || !room) return;
+
+  const master = getHotelMaster(cityType, hotelItem.hotelId);
+  if (!master) return;
+
+  // Refresh from the currently selected hotel's rate on every room-type change.
+  room.rate = getHotelDefaultRate(cityType, hotelItem.hotelId, room.type, hotelItem.vendorId);
+
+  const mealField = { breakfast: 'breakfast', half_board: 'halfBoard', full_board: 'fullBoard' }[room.meal];
+  if (!mealField) {
+    room.mealRate = 0;
+    return;
+  }
+
+  const mealRate = Number(master[mealField]);
+  room.mealRate = Number.isFinite(mealRate) ? mealRate : 0;
+}
