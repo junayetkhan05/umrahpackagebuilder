@@ -162,7 +162,7 @@ function addHotelRoom(cityType, hotelItemId, roomType = 'double') {
   const rate = getHotelDefaultRate(cityType, h.hotelId, roomType, h.vendorId);
 
   hotelRoomCounter++;
-  h.rooms.push({
+  const room = {
     id: hotelRoomCounter,
     type: roomType,
     adults: cap,
@@ -171,12 +171,11 @@ function addHotelRoom(cityType, hotelItemId, roomType = 'double') {
     rate,
     meal: 'room_only',
     mealRate: 0
-  });
+  };
 
-  if (h.hotelId) {
-    const room = h.rooms[h.rooms.length - 1];
-    syncHotelRoomPricing(cityType, h, room);
-  }
+  h.rooms.push(room);
+
+  if (h.hotelId) syncHotelRoomPricing(cityType, h, room);
 
   renderMakkahHotelsList();
   renderMadinahHotelsList();
@@ -200,18 +199,13 @@ function syncHotelRoomPricing(cityType, hotelItem, room) {
   const master = masterList.find(h => String(h.id) === String(hotelItem.hotelId));
   if (!master) return;
 
-  const roomRate = Number(master[room.type] || 0);
-  if (roomRate > 0) room.rate = roomRate;
+  const roomRate = Number(master[room.type] ?? 0);
+  room.rate = roomRate;
 
   if (room.meal && room.meal !== 'room_only') {
-    const mealFieldMap = {
-      breakfast: 'breakfast',
-      half_board: 'halfBoard',
-      full_board: 'fullBoard'
-    };
+    const mealFieldMap = { breakfast: 'breakfast', half_board: 'halfBoard', full_board: 'fullBoard' };
     const mealField = mealFieldMap[room.meal];
-    const mealRate = Number(master[mealField] || 0);
-    if (mealRate > 0) room.mealRate = mealRate;
+    room.mealRate = Number(master[mealField] ?? 0);
   } else {
     room.mealRate = 0;
   }
@@ -251,7 +245,7 @@ function getHotelDefaultRate(cityType, hotelId, roomType, vendorId = null) {
   const list = cityType === 'makkah' ? STORE.makkahHotels : STORE.madinahHotels;
   const dbH = list.find(x => x.id === parseInt(hotelId));
   if (!dbH) return 0;
-  return dbH[roomType] || 0;
+  return Number(dbH[roomType] ?? 0);
 }
 
 /* ==================== VENDOR COST RATE ==================== */
@@ -268,7 +262,7 @@ function getHotelVendorRate(cityType, hotelId, roomType, vendorId = null) {
   if (!vendor) return 0;
 
   const vh = findVendorHotel(vendor, dbH);
-  return Number(vh?.[roomType] || 0);
+  return Number(vh?.[roomType] ?? 0);
 }
 
 /* ==================== MEAL RATES ==================== */
@@ -280,7 +274,7 @@ function getHotelDefaultMealRate(cityType, hotelItem, meal) {
   if (!field) return 0;
 
   const master = (cityType === 'makkah' ? STORE.makkahHotels : STORE.madinahHotels).find(h => h.id === hotelItem.hotelId);
-  return Number(master?.[field] || 0);
+  return Number(master?.[field] ?? 0);
 }
 
 function getHotelVendorMealRate(cityType, hotelItem, meal) {
@@ -300,7 +294,7 @@ function getHotelVendorMealRate(cityType, hotelItem, meal) {
   if (!vendor) return 0;
 
   const vh = findVendorHotel(vendor, master);
-  return Number(vh?.[field] || 0);
+  return Number(vh?.[field] ?? 0);
 }
 
 /* ==================== HOTEL TOTALS ==================== */
