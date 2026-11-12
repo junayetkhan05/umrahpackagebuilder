@@ -53,6 +53,7 @@ function onMakkahHotelChange(itemId, hotelId) {
     h.imageIds = dbH.imageIds || [];
     if (!h.checkIn) h.checkIn = strVal('pkgCheckIn');
     if (!h.rooms.length) addHotelRoom('makkah', h.id, builderDefaultRoomSharing || 'double');
+    (h.rooms || []).forEach(r => syncHotelRoomPricing('makkah', h, r));
   }
   renderMakkahHotelsList();
   recalc();
@@ -111,6 +112,7 @@ function onMadinahHotelChange(itemId, hotelId) {
     if (!h.checkIn) h.checkIn = firstMakkah?.checkOut || '';
     if (!h.checkOut) h.checkOut = strVal('pkgCheckOut');
     if (!h.rooms.length) addHotelRoom('madinah', h.id, builderDefaultRoomSharing || 'double');
+    (h.rooms || []).forEach(r => syncHotelRoomPricing('madinah', h, r));
   }
   renderMadinahHotelsList();
   recalc();
@@ -171,6 +173,11 @@ function addHotelRoom(cityType, hotelItemId, roomType = 'double') {
     mealRate: 0
   });
 
+  if (h.hotelId) {
+    const room = h.rooms[h.rooms.length - 1];
+    syncHotelRoomPricing(cityType, h, room);
+  }
+
   renderMakkahHotelsList();
   renderMadinahHotelsList();
   recalc();
@@ -186,6 +193,30 @@ function removeHotelRoom(cityType, hotelItemId, roomId) {
   recalc();
 }
 
+function syncHotelRoomPricing(cityType, hotelItem, room) {
+  if (!hotelItem?.hotelId || !room) return;
+
+  const masterList = cityType === 'makkah' ? STORE.makkahHotels : STORE.madinahHotels;
+  const master = masterList.find(h => String(h.id) === String(hotelItem.hotelId));
+  if (!master) return;
+
+  const roomRate = Number(master[room.type] || 0);
+  if (roomRate > 0) room.rate = roomRate;
+
+  if (room.meal && room.meal !== 'room_only') {
+    const mealFieldMap = {
+      breakfast: 'breakfast',
+      half_board: 'halfBoard',
+      full_board: 'fullBoard'
+    };
+    const mealField = mealFieldMap[room.meal];
+    const mealRate = Number(master[mealField] || 0);
+    if (mealRate > 0) room.mealRate = mealRate;
+  } else {
+    room.mealRate = 0;
+  }
+}
+
 function updateHotelRoom(cityType, hotelItemId, roomId, field, value) {
   const items = cityType === 'makkah' ? makkahItems : madinahItems;
   const h = items.find(x => x.id === hotelItemId);
@@ -196,19 +227,11 @@ function updateHotelRoom(cityType, hotelItemId, roomId, field, value) {
   if (field === 'type') {
     r.type = value;
     r.adults = ROOM_CAPACITY[value] || 2;
-    const newRate = getHotelDefaultRate(cityType, h.hotelId, value, h.vendorId);
-    if (newRate > 0) r.rate = newRate;
-    if (r.meal && r.meal !== 'room_only') {
-      const newMealRate = getHotelDefaultMealRate(cityType, h, r.meal);
-      if (newMealRate > 0) r.mealRate = newMealRate;
-    }
+    syncHotelRoomPricing(cityType, h, r);
   } else if (field === 'meal') {
     r.meal = value;
     if (value === 'room_only') r.mealRate = 0;
-    else {
-      const autoRate = getHotelDefaultMealRate(cityType, h, value);
-      if (autoRate > 0) r.mealRate = autoRate;
-    }
+    else syncHotelRoomPricing(cityType, h, r);
   } else if (field === 'mealRate') {
     r.mealRate = Math.max(0, parseFloat(value) || 0);
   } else if (['adults', 'children', 'nights'].includes(field)) {
